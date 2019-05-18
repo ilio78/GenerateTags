@@ -52,6 +52,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Data\Orders.csv" />
+    <Content Include="Data\pageCold.css" />
+    <Content Include="Data\pageHot.css" />
     <Content Include="pageHot.css" />
     <Content Include="pageCold.css" />
     <None Include="Tag Generator User Manual.doc" />

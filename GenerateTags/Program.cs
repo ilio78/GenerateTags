@@ -32,7 +32,8 @@ namespace GenerateTags
         static string WORK_PATH;
         static int COLUMNS_HOT = 4;
         static int COLUMNS_COLD = 5;
-
+        static int FIRST_MENU_ITEMS_THAT_ARE_HOT = 3;
+        static int FIRST_MENU_ITEMS_THAT_HAVE_SIDE_ORDER = 5;
 
         static void Main(string[] args)
         {
@@ -63,7 +64,7 @@ namespace GenerateTags
                             counter = 0;
                             WeekMenu.Add(currentDay, new List<Food>());
                         }
-                        WeekMenu[currentDay].Add(new Food() { MainDish = line.Substring(0, line.IndexOf('/')).Trim(), IsHot = counter < 3 });
+                        WeekMenu[currentDay].Add(new Food() { MainDish = line.Substring(0, line.IndexOf('/')).Trim(), IsHot = counter < FIRST_MENU_ITEMS_THAT_ARE_HOT });
                         counter++;
                     }
                 }
@@ -83,6 +84,7 @@ namespace GenerateTags
                     }
                 }
 
+                // For each day the side menu is the same.
                 foreach (WeekDays day in WeekMenu.Keys)
                 {
                     if (sideDishes.Count <= (int)day)
@@ -93,7 +95,7 @@ namespace GenerateTags
                     {
                         food.SideDish = sideDishes[(int)day];
                         // Only the first 5 options have a side dish!
-                        if (++count == 5)
+                        if (++count >= FIRST_MENU_ITEMS_THAT_HAVE_SIDE_ORDER)
                             break;
                     }
                 }
@@ -125,6 +127,9 @@ namespace GenerateTags
 
                     while ((line = orderFile.ReadLine()) != null)
                     {
+                        if (string.IsNullOrWhiteSpace(line))
+                            continue;
+
                         List<string> personData = new List<string>(line.Split(';'));
                         currentPosition = string.IsNullOrWhiteSpace(personData[0]) ? currentPosition : personData[0].Trim();
                         string personLocation = personData[1].Trim() + "@" + currentPosition;
@@ -252,6 +257,8 @@ namespace GenerateTags
 
             COLUMNS_HOT = Int32.Parse(ConfigurationManager.AppSettings["ColumnsHot"] ?? COLUMNS_HOT.ToString());
             COLUMNS_COLD = Int32.Parse(ConfigurationManager.AppSettings["ColumnsCold"] ?? COLUMNS_COLD.ToString());
+            FIRST_MENU_ITEMS_THAT_ARE_HOT = Int32.Parse(ConfigurationManager.AppSettings["FirstMenuItemsThatAreHot"] ?? FIRST_MENU_ITEMS_THAT_ARE_HOT.ToString());
+            FIRST_MENU_ITEMS_THAT_HAVE_SIDE_ORDER = Int32.Parse(ConfigurationManager.AppSettings["FirstMenuItemsThatHaveSideOrder"] ?? FIRST_MENU_ITEMS_THAT_HAVE_SIDE_ORDER.ToString());
         }
 
         enum OrderFileType
@@ -291,9 +298,9 @@ namespace GenerateTags
 
                     IEnumerable<Food> choices;
                     if (orderFileType == OrderFileType.Hot)
-                        choices = PersonLocationChoices[day][personLocation].Where(f => f.MainDish == foodChoice.MainDish && f.IsHot == true);
+                        choices = PersonLocationChoices[day][personLocation].Where(f => f.MainDish == foodChoice.MainDish && f.IsHot);
                     else if (orderFileType == OrderFileType.Cold)
-                        choices = PersonLocationChoices[day][personLocation].Where(f => f.MainDish == foodChoice.MainDish && f.IsHot == false);
+                        choices = PersonLocationChoices[day][personLocation].Where(f => f.MainDish == foodChoice.MainDish && !f.IsHot);
                     else
                         choices = PersonLocationChoices[day][personLocation].Where(f => f.MainDish == foodChoice.MainDish && f.SideDish != null);
 
