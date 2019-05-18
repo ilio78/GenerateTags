@@ -51,12 +51,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Orders.csv" />
+    <None Include="Data\Orders.csv" />
     <Content Include="pageHot.css" />
     <Content Include="pageCold.css" />
     <None Include="Tag Generator User Manual.doc" />
-    <None Include="WeeklyMenu.csv" />
-    <None Include="WeeklyMenuSide.csv" />
+    <None Include="Data\WeeklyMenu.csv" />
+    <None Include="Data\WeeklyMenuSide.csv" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
