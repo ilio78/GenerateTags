@@ -1,0 +1,55 @@
+body {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+    page-break-inside: auto;
+}
+
+tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+    text-align: center;
+}
+
+td {
+    width: 20%;
+    vertical-align: middle;
+}
+
+.tag {
+    text-align: center;
+    height: 80px;
+    vertical-align: middle;
+    margin: auto;
+    align-items: center;
+    font-size: 12px;
+    border: 1px solid black;
+}
+
+.tag .location {
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+    font-size: 11px;
+}
+
+.tag .personName {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.tag .foodName {
+    padding-top: 20px;
+}
+
+@page {
+    size: auto; /* auto is the initial value */
+    margin: 0; /* this affects the margin in the printer settings */
+}
